@@ -1,14 +1,13 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "virtualNetworkName": {
-      "type": "string",
-      "metadata": {
-        "description": "VNet name"
-      }
-    },
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
     "parameters": {
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "VNet name"
+            }
+        },
         "location": {
             "type": "string",
             "defaultValue": "westus",
@@ -43,51 +42,46 @@
             "metadata": {
                 "description": "Deployment Location Hint: Use lowercase for creating ipaddress"
             }
-},
-    "subnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Subnet 1 Name"
-      }
-    },
-    "existingVnetResourceGroupName": {
-      "type": "string",
-      "metadata": {
-        "description": "Subnet Name"
-      }
-    }
-  },
-  "variables": {
-  },
-  "resources": [
-    {
-      "apiVersion": "2016-03-30",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [ "10.0.0.0/16" ]
         },
-        "subnets": [
-          {
-            "name": "[parameters('subnetName')]",
-            "properties": {
-              "addressPrefix": "10.0.0.0/24"
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet 1 Name"
             }
-          }
-        ]
-      }
-    }
-  ],
-  "outputs": {
-    "subnet1Ref": {
-      "value": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')), '/subnets/',parameters('subnetName'))]",
-      "type": "string"
+        }
     },
-    "virtualNetworkID": {
-      "value": "",
-      "type": "string"
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2016-03-30",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworkName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "subnet1Ref": {
+            "value": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')), '/subnets/',parameters('subnetName'))]",
+            "type": "string"
+        },
+        "virtualNetworkID": {
+            "value": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')))]",
+            "type": "string"
+        }
     }
-  }
 }
